@@ -6,7 +6,13 @@
 
 ## Installation
 
-1. Run the commands in the Terminal.
+1. Clone the repository to your computer.
+
+```bash
+git clone https://github.com/mrumyantsev/mkpkg.git
+```
+
+2. Run the commands in the Terminal.
 
 ```bash
 make
