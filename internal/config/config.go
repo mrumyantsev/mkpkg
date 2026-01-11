@@ -61,6 +61,8 @@ func (c *Config) ParseCliArgs(args []string) {
 	flagMethods := flag.String("methods", "", "")
 	flagN := flag.String("n", "", "")
 	flagName := flag.String("name", "", "")
+	flagP := flag.String("p", "", "")
+	flagPackage := flag.String("package", "", "")
 
 	err := flag.CommandLine.Parse(args[1:])
 	if errors.Is(err, flag.ErrHelp) {
@@ -74,6 +76,7 @@ func (c *Config) ParseCliArgs(args []string) {
 	c.Eol = pickOneVal(c.Eol, flagEol)
 	c.Eol = strings.ReplaceAll(c.Eol, "\\n", "\n")
 	c.Eol = strings.ReplaceAll(c.Eol, "\\r", "\r")
+	c.PackageName = pickOneVal(c.PackageName, flagP, flagPackage)
 	c.ObjectName = pickOneVal(c.ObjectName, flagN, flagName)
 	c.ObjectConstructor = pickOneVal(c.ObjectConstructor, flagC, flagCtor)
 
@@ -109,18 +112,20 @@ func (c *Config) ParseCliArgs(args []string) {
 		logging.ErrorHintGoodquit(errors.New("multiple package paths are not allowed"))
 	}
 
-	c.PackageName = filepath.Base(c.Path)
+	basename := filepath.Base(c.Path)
 
 	if c.Filename == "" {
-		c.Filename = c.PackageName
+		c.Filename = basename
 	}
-
-	c.PackageName = strings.ReplaceAll(c.PackageName, "-", "")
-	c.PackageName = strings.ToLower(c.PackageName)
 
 	if len(c.Filename) >= 4 && c.Filename[len(c.Filename)-3:] != ".go" ||
 		len(c.Filename) <= 3 {
 		c.Filename += ".go"
+	}
+
+	if c.PackageName == "" {
+		c.PackageName = strings.ReplaceAll(basename, "-", "")
+		c.PackageName = strings.ToLower(c.PackageName)
 	}
 
 	if c.ObjectName == "" {

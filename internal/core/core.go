@@ -15,6 +15,7 @@ Mandatory arguments to long options are mandatory for short options too.
       --iface                  switch struct creating to interface creating
   -m, --methods                apply list of methods (semicolon separated)
   -n, --name                   specify name for the new object
+  -p, --package                specify package name (inside Go file)
   -v, --version                output version information and exit
 `
 
