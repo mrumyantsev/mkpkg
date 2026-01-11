@@ -115,6 +115,9 @@ func (c *Config) ParseCliArgs(args []string) {
 		c.Filename = c.PackageName
 	}
 
+	c.PackageName = strings.ReplaceAll(c.PackageName, "-", "")
+	c.PackageName = strings.ToLower(c.PackageName)
+
 	if len(c.Filename) >= 4 && c.Filename[len(c.Filename)-3:] != ".go" ||
 		len(c.Filename) <= 3 {
 		c.Filename += ".go"
