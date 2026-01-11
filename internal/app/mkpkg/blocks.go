@@ -7,16 +7,18 @@ import (
 )
 
 func (a *App) addBlockPackage(sb *strings.Builder) {
+	logging.Infof("creating package '%s'...\n", a.config.PackageName)
+
 	// package start
 	sb.WriteString("package ")
 	sb.WriteString(a.config.PackageName)
 	sb.WriteString(a.config.Eol)
 	// package end
-
-	logging.Infof("created package '%s'\n", a.config.PackageName)
 }
 
 func (a *App) addBlockObject(sb *strings.Builder) {
+	logging.Infof("creating %s '%s'...\n", a.config.ObjectType, a.config.ObjectName)
+
 	// object start
 	sb.WriteString(a.config.Eol)
 	sb.WriteString("type ")
@@ -28,11 +30,11 @@ func (a *App) addBlockObject(sb *strings.Builder) {
 	// interface methods start
 	if a.config.ObjectType == "interface" {
 		for i := range a.config.ObjectMethods {
+			logging.Infof("creating method '%s'...\n", a.config.ObjectMethods[i])
+
 			sb.WriteString("\t")
 			sb.WriteString(a.config.ObjectMethods[i])
 			sb.WriteString(a.config.Eol)
-
-			logging.Infof("created method '%s'\n", a.config.ObjectMethods[i])
 		}
 	}
 	// interface methods end
@@ -40,9 +42,9 @@ func (a *App) addBlockObject(sb *strings.Builder) {
 	sb.WriteString(a.config.Eol)
 	// object end
 
-	logging.Infof("created %s '%s'\n", a.config.ObjectType, a.config.ObjectName)
-
 	if a.config.ObjectType == "struct" {
+		logging.Infof("creating constructor '%s'...\n", a.config.ObjectConstructor)
+
 		// object constructor start
 		sb.WriteString(a.config.Eol)
 		sb.WriteString("func ")
@@ -59,10 +61,10 @@ func (a *App) addBlockObject(sb *strings.Builder) {
 		sb.WriteString(a.config.Eol)
 		// object constructor end
 
-		logging.Infof("created constructor '%s'\n", a.config.ObjectConstructor)
-
 		// object methods start
 		for i := range a.config.ObjectMethods {
+			logging.Infof("creating method '%s'...\n", a.config.ObjectMethods[i])
+
 			sb.WriteString(a.config.Eol)
 			sb.WriteString("func (")
 			sb.WriteString(a.config.ObjectReceiver)
@@ -88,8 +90,6 @@ func (a *App) addBlockObject(sb *strings.Builder) {
 			// return values end
 			sb.WriteString("}")
 			sb.WriteString(a.config.Eol)
-
-			logging.Infof("created method '%s'\n", a.config.ObjectMethods[i])
 		}
 		// object methods end
 	}

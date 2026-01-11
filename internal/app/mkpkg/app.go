@@ -48,8 +48,6 @@ func (a *App) createNewFile(fpath string) {
 }
 
 func (a *App) appendToFile(fpath string) {
-	logging.Infof("note: file '%s' already exists\n", a.config.Filename)
-
 	file := openFileRW(fpath)
 	defer closeFile(file)
 
@@ -59,13 +57,13 @@ func (a *App) appendToFile(fpath string) {
 	if !strings.Contains(contents, "package "+a.config.PackageName) {
 		a.addBlockPackage(sb)
 	} else {
-		logging.Infof("ignored package '%s'\n", a.config.PackageName)
+		logging.Infof("package '%s' already exists\n", a.config.PackageName)
 	}
 
 	if !strings.Contains(contents, "type "+a.config.ObjectName) {
 		a.addBlockObject(sb)
 	} else {
-		logging.Infof("ignored %s '%s'\n", a.config.ObjectType, a.config.ObjectName)
+		logging.Infof("object '%s' already exists\n", a.config.ObjectName)
 	}
 
 	writeToFile(file, sb.String())
